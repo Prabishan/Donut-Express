@@ -1,5 +1,6 @@
 #ifndef MAINWIN_H
 #define MAINWIN_H
+#include "store.h"
 
 #include <gtkmm.h>
 
@@ -14,6 +15,7 @@ class Mainwin : public Gtk::Window
         void on_create_coffee_click();
         void on_create_donut_click();
     private:
+    
         Store _store;
         Gtk::Label* msg;
         Gtk::MenuItem* menuitem_new_coffee;

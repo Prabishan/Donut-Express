@@ -1,9 +1,11 @@
-#include "product.h"
-#include "donut.h"
-#include "java.h"
-int main(){
-bool a = false;
-    Donut d ("a", 5.0, 6.0, Frosting::chocolate_top,a,Filling::Bavarian);
-    d.to_string();
-    return 0;
+#include "mainwin.h"
+#include <gtkmm.h>
+
+int main(int argc, char *argv[]) {
+   // Gtk::Main kit(argc, argv);
+   auto app = Gtk::Application::create(argc,argv,"edu.uta.cse1325.de");
+    
+    Mainwin win;
+    win.set_title("Java and Donut Express(JADE)");
+    return app->run(win);
 }
