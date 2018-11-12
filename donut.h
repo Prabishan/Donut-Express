@@ -1,14 +1,17 @@
 #ifndef _DONUT_H
 #define _DONUT_H
 #include "product.h" 
-#include <string>
+#include <ostream>
+#include <vector>
 
-enum Frosting{Unfrosted, chocolate_top, Vanilla_top, Pink_top};
+enum Frosting{Unfrosted, Chocolate_top, Vanilla_top, Pink_top};
+const std::vector<std::string> frosting_to_string = {"unfrosted", "chocolate", "vanilla", "pink"};
 enum Filling {Unfilled, Creme, Bavarian, Strawberry};
+const std::vector<std::string> filling_to_string = {"unfilled", "creme", "bavarian", "strawberry"};
 class Donut: public Product {
     public:
         Donut(std::string name, double price, double cost, Frosting frosting, bool sprinkles, Filling filling);
-        virtual std::string to_string() override;
+        std::string to_string() override;
     protected:
         Frosting _frosting;
         bool _sprinkles;

@@ -1,8 +1,8 @@
 #ifndef MAINWIN_H
 #define MAINWIN_H
-#include "store.h"
 
 #include <gtkmm.h>
+#include "store.h"
 
 class Mainwin : public Gtk::Window
 {

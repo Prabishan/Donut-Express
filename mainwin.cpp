@@ -67,6 +67,13 @@ Mainwin::Mainwin() {
     }
 Mainwin::~Mainwin() {}
 
+void Mainwin::on_view_all_click(){
+    std::ostringstream oss;
+    oss << _store << std::endl;
+    Gtk::MessageDialog d{*this, oss.str()};
+    int result = d.run();
+}
+
 void Mainwin::on_quit_click(){
-    hide();
+    close();
 }
