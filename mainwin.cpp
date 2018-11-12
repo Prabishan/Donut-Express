@@ -1,14 +1,17 @@
 #include "mainwin.h"
+#include "java.h"
+#include "donut.h"
+#include <ostream>
 #include <iostream>
 
 
-Mainwin::Mainwin() {
+Mainwin::Mainwin() : _store{Store{"JADE"}} {
 
     // /////////////////
     // G U I   S E T U P
     // /////////////////
-
-    set_default_size(400, 400);
+    set_title("Java and Donut Express (JADE)");
+    set_default_size(800, 600);
 
     // Put a vertical box container as the Window contents
     Gtk::Box *vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 0));
@@ -42,8 +45,12 @@ Mainwin::Mainwin() {
     //         A L L  P R O D U C T S
     // Append All-Products to the view menu
     Gtk::MenuItem *menuitem_allProduct = Gtk::manage(new Gtk::MenuItem("_All Product", true));
-    menuitem_allProduct->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_quit_click));
+    menuitem_allProduct->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_view_all_click));
     viewmenu->append(*menuitem_allProduct);
+    //         Customers menu 
+    Gtk::MenuItem *menuitem_allCustomer = Gtk::manage(new Gtk::MenuItem("_All Customer", true));
+    menuitem_allCustomer->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_view_all_click));
+    viewmenu->append(*menuitem_allCustomer);
 
     //          C R E A T E
     Gtk::MenuItem *menuitem_create = Gtk::manage(new Gtk::MenuItem("_Create", true));
@@ -62,10 +69,22 @@ Mainwin::Mainwin() {
     Gtk::MenuItem *menuitem_donut = Gtk::manage(new Gtk::MenuItem("_Donut", true));
     menuitem_donut->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_quit_click));
     createmenu->append(*menuitem_donut);
-        vbox->show_all();
+
+    //        C U S T O M E R
+    //      Append Customer to the create menu    
+    Gtk::MenuItem *menuitem_customer = Gtk::manage(new Gtk::MenuItem("_Customer", true));
+    menuitem_customer->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_quit_click));
+    createmenu->append(*menuitem_customer);    
+    //   S T A T U S    B A R   D I S P L A Y
+    // Provide a status bar for program messages
+    msg = Gtk::manage(new Gtk::Label());
+    msg->set_hexpand(true);
+    vbox->add(*msg);
     
+    // Make the box and everything in it visible
+    vbox->show_all();
     }
-Mainwin::~Mainwin() {}
+Mainwin::~Mainwin() { }
 
 void Mainwin::on_view_all_click(){
     std::ostringstream oss;
@@ -74,6 +93,12 @@ void Mainwin::on_view_all_click(){
     int result = d.run();
 }
 
+void Mainwin::on_create_donut_click() { // Create a new donut product
+   Frosting frosting = (Frosting)(rand()%frosting_to_string.size());
+   Filling filling = (Filling)(rand()%filling_to_string.size());
+   Donut* d = new Donut{"Donut", 0.75, 0.25, frosting, true, filling};
+   _store.add_product(d);
+}
 void Mainwin::on_quit_click(){
     close();
 }

@@ -5,7 +5,7 @@
 #include <ostream>
 
 enum Shot {None, Chocolate, Vanilla, Peppermint, Hazelnut};
-std::vector<std::string> shot_to_string = {"none", "chocolate", "vanilla", "peppermint", "hazelnut"};
+const std::vector<std::string> shot_to_string = {"none", "chocolate", "vanilla", "peppermint", "hazelnut"};
 class Java: public Product {
     public:
         Java(std::string name, double price, double cost, int darkness);
