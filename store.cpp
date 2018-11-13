@@ -21,7 +21,7 @@ std::string Store::product_to_string(int product){
     return oss.str();
 }
 
-void Store::add_product(Customer* customer){
+void Store::add_customer(Customer* customer){
     _customers.push_back(customer);
 }
 
@@ -40,4 +40,12 @@ std::ostream& operator<<(std::ostream& ost, Store& store) {
     ost << "Products: "<<std::endl;
     for(auto p : store._products) ost<<" "<<p->to_string()<<std::endl;
     return ost;
+}
+
+std::string Store::customer_menu() {
+    std::ostringstream ost;
+    ost<<"List of Customer:"<<std::endl;
+    for (auto c : _customers) ost << " " << c->to_string()<< std::endl;
+
+    return ost.str();
 }

@@ -9,8 +9,8 @@ all: main
 debug: CXXFLAGS += -g
 debug: default
 
-jade: main.o mainwin.o store.o product.o java.o donut.o *.h
-	${CXX} ${CXXFLAGS} -o jade main.o mainwin.o store.o product.o java.o donut.o $(GTKFLAGS)
+jade: main.o mainwin.o store.o product.o java.o donut.o dialogs.o customer.o *.h
+	${CXX} ${CXXFLAGS} -o jade main.o mainwin.o store.o product.o java.o donut.o dialogs.o customer.o $(GTKFLAGS)
 main.o: main.cpp *.h
 	${CXX} ${CXXFLAGS} -c main.cpp $(GTKFLAGS)
 mainwin.o: mainwin.cpp *.h
@@ -21,5 +21,9 @@ java.o: java.cpp *.h
 	${CXX} ${CXXFLAGS} -c java.cpp
 donut.o: donut.cpp *.h
 	${CXX} ${CXXFLAGS} -c donut.cpp
+dialogs.o: dialogs.cpp *.h
+	${CXX} ${CXXFLAGS} -c dialogs.cpp $(GTKFLAGS)
+customer.o: customer.cpp *.h 
+	${CXX} ${CXXFLAGS} -c customer.cpp 
 clean:
 	-rm -f *.gch *.o a.out jade 

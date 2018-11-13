@@ -13,10 +13,11 @@ class Store{
         int number_of_products();
         std::string product_to_string(int product);
         //customer functions
-        void add_product(Customer* customer);
+        void add_customer(Customer* customer);
         int number_of_customers();
         std::string customer_to_string(int customer);
         friend std::ostream& operator<<(std::ostream& ost, Store& store);
+        std::string customer_menu();
 
     private:
         std::string _name;
