@@ -2,7 +2,7 @@
 
     int Order::_next_order_number =0;
 
-    Order::Order() : _order_number {_next_order_number++}, _is_paid{false}, _is_filled{false} { }
+    Order::Order() : _order_number {_next_order_number++}, _is_paid{false}, _is_filled{false}, _is_discarded{false} { }
 
     int Order::order_number() const{
         return _order_number;
@@ -18,7 +18,11 @@
     }
 
     void Order::pay(){
+        if( _is_paid == false && _is_discarded == false){
         _is_paid = true;
+        }else{
+            throw std::runtime_error("The order has been already paid or it has been discarded");
+        }
     }
 
     bool Order::filled() const{
@@ -26,7 +30,43 @@
     }
 
     void Order::fill(){
-        _is_filled =true;
+        if(_is_filled == false && _is_discarded == false){
+        _is_filled = true;
+        }else{
+            throw std::runtime_error("The order has been already filled or it has been discarded");
+        }
+    }
+
+    bool Order::discarded() const{
+        return _is_discarded;
+    }
+
+    void Order::discarded() {
+        if(_is_discarded==false && completed() == false){
+        _is_discarded = true;
+        } else {
+            throw std::runtime_error("The order has been discarded");
+        }
+    }
+
+    bool Order::pending() {
+        if( _is_filled == false && _is_paid == false){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    bool Order::completed() {
+        if(_is_filled == true && _is_paid == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    double Order::profit() {
+
     }
 
     std::ostream& operator<<(std::ostream& ost, const Order& order) {

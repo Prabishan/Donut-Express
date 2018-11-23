@@ -3,6 +3,8 @@
 #include "donut.h"
 #include "customer.h"
 #include <ostream>
+#include <sstream>
+#include <fstream>
 #include <iostream>
 #include <regex>
 
@@ -32,6 +34,18 @@ Mainwin::Mainwin() : _store{Store{"JADE"}} {
     menubar->append(*menuitem_file);
     Gtk::Menu *filemenu = Gtk::manage(new Gtk::Menu());
     menuitem_file->set_submenu(*filemenu);
+    
+    //         S A V E
+    // Append Save to the File menu
+    Gtk::MenuItem *menuitem_save = Gtk::manage(new Gtk::MenuItem("_Save", true));
+    menuitem_save->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_save_click));
+    filemenu->append(*menuitem_save);
+
+    //         L O A D
+    // Append Load to the File menu
+    Gtk::MenuItem *menuitem_load = Gtk::manage(new Gtk::MenuItem("_Load", true));
+    menuitem_load->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_load_click));
+    filemenu->append(*menuitem_load);
 
     //         Q U I T
     // Append Quit to the File menu
@@ -96,6 +110,28 @@ Mainwin::Mainwin() : _store{Store{"JADE"}} {
     menuitem_new_customer->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_new_customer_click));
     createmenu->append(*menuitem_new_customer);
 
+    //           P R O C E S S
+    // Create a Process menu and add to the menu bar
+	Gtk::MenuItem *menuitem_process = Gtk::manage(new Gtk::MenuItem("_Process", true));
+	menubar->append(*menuitem_process);
+	Gtk::Menu *process_menu = Gtk::manage(new Gtk::Menu());
+	menuitem_process->set_submenu(*process_menu);
+
+	//Append Fill to the Process menu 
+	menuitem_fill = Gtk::manage(new Gtk::MenuItem("_Fill Order", true));
+	menuitem_fill->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_fill_click));
+	process_menu->append(*menuitem_fill);
+
+	//Append pay to the Process menu
+	menuitem_pay = Gtk::manage(new Gtk::MenuItem("_Pay Order", true));
+	menuitem_pay->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_pay_click));
+	process_menu->append(*menuitem_pay);
+
+    //Append Delete to the Process menu
+	Gtk::MenuItem *menuitem_delete = Gtk::manage(new Gtk::MenuItem("_Delete Order", true));
+	menuitem_delete->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_delete_click));
+	process_menu->append(*menuitem_delete);
+
     //     H E L P
     // Create a Help menu and add to the menu bar
     Gtk::MenuItem *menuitem_help = 
@@ -138,6 +174,33 @@ Mainwin::Mainwin() : _store{Store{"JADE"}} {
 
     Gtk::SeparatorToolItem *sep0 = Gtk::manage(new Gtk::SeparatorToolItem());
     toolbar->append(*sep0);
+
+    //     F I L L   O R D E R
+    // Fill a order
+    Gtk::Image* fill_order_image = Gtk::manage(new Gtk::Image{"fill_order.png"});
+    Gtk::ToolButton *fill_order_button = Gtk::manage(new Gtk::ToolButton{*fill_order_image});
+    fill_order_button->set_tooltip_markup("Fill Order");
+    fill_order_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_fill_click));
+    toolbar->append(*fill_order_button);
+
+    //     P A Y   O R D E R
+    // Pay a order
+    Gtk::Image* pay_order_image = Gtk::manage(new Gtk::Image{"pay_order.png"});
+    Gtk::ToolButton *pay_order_button = Gtk::manage(new Gtk::ToolButton{*pay_order_image});
+    pay_order_button->set_tooltip_markup("Pay Order");
+    pay_order_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_pay_click));
+    toolbar->append(*pay_order_button);
+
+    //     D E l E T E   O R D E R
+    // Delete a order
+    Gtk::Image* delete_order_image = Gtk::manage(new Gtk::Image{"delete_order.png"});
+    Gtk::ToolButton *delete_order_button = Gtk::manage(new Gtk::ToolButton{*delete_order_image});
+    delete_order_button->set_tooltip_markup("Delete Order");
+    delete_order_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_delete_click));
+    toolbar->append(*delete_order_button);
+
+    Gtk::SeparatorToolItem *sep2 = Gtk::manage(new Gtk::SeparatorToolItem());
+    toolbar->append(*sep2);
 
     //     V I E W   A L L   P R O D U C T S
     // View all products currently defined
@@ -318,6 +381,95 @@ void Mainwin::on_list_customers_click() {
     Gtk::MessageDialog d{*this, "List of Customers"};
     d.set_secondary_text(oss.str());
     int result = d.run();
+}
+
+void Mainwin::on_save_click() {
+
+    Gtk::Dialog dlg{"Enter File Name", *this};
+	dlg.set_default_size(250,10);
+    Gtk::Entry e;
+    dlg.get_vbox()->pack_start(e, Gtk::PACK_SHRINK);
+
+    dlg.add_button("Save", 1);
+
+    dlg.show_all();
+    dlg.run();
+
+	bool valid_data = false;
+
+	while(!valid_data) {
+		if(e.get_text()=="" || e.get_text() == "*Invalid Name*") {
+			valid_data = false;
+			e.set_text("*Invalid Name*");
+			dlg.run();
+		} else valid_data = true;
+	}
+
+    std::string s = e.get_text() + ".txt";
+
+    dlg.close();
+
+	try {
+        std::ofstream ofs{s,std::ofstream::out};
+        _store.save(ofs);
+    } catch (std::exception& e) {
+        Gtk::MessageDialog dialog{*this, "Unable to save "+ s};
+        dialog.set_secondary_text(e.what());
+        dialog.run();
+        dialog.close();
+    }
+
+
+}
+
+void Mainwin::on_load_click() {
+	Gtk::FileChooserDialog dialog("Please choose a file", Gtk::FILE_CHOOSER_ACTION_OPEN);
+  	dialog.set_transient_for(*this);
+
+  	//Add response buttons the the dialog:
+  	dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+  	dialog.add_button("_Open", Gtk::RESPONSE_OK);
+
+	//Show the dialog and wait for a user response:
+	int result = dialog.run();
+	std::string filename;
+
+	//Handle the response:
+	switch(result)
+	{
+	  case(Gtk::RESPONSE_OK):
+	  {
+		std::cout << "Open clicked." << std::endl;
+
+		//Notice that this is a std::string, not a Glib::ustring.
+		filename = dialog.get_filename();
+		std::cout << "File selected: " <<  filename << std::endl;
+		break;
+	  }
+	  case(Gtk::RESPONSE_CANCEL):
+	  {
+		std::cout << "Cancel clicked." << std::endl;
+		break;
+	  }
+	  default:
+	  {
+		std::cout << "Unexpected button clicked." << std::endl;
+		break;
+	  }
+	}
+
+	try {
+        std::ifstream ifs{filename, std::ifstream::in};
+	//	all_pnl.push_back(emp.get_pnl_report());
+		Store new_str{ifs};
+        _store = new_str;
+    } catch (std::exception& e) {
+        Gtk::MessageDialog dialog{*this, "Unable to open file"};
+        dialog.set_secondary_text(e.what());
+        dialog.run();
+        dialog.close();
+    }
+
 }
 /*
 void Mainwin::on_order_click() {

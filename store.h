@@ -10,6 +10,7 @@
 class Store {
   public:
     Store(std::string store_name);
+    Store(std::istream& ist);
     std::string name(); // Returns the store name
 
     void add_product(Product* product); // Add a new product to stock
@@ -24,6 +25,7 @@ class Store {
     void place_order(Order order, int customer); // place a new order
     int number_of_orders(); // number of order defined
     std::string order_to_string(int order_number); //string version of order
+    void save(std::ostream& ost);
     //void add_productstr(int np);
     friend std::ostream& operator<<(std::ostream& ost, Store& store); 
   private:

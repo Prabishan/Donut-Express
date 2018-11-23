@@ -9,12 +9,14 @@ all: main
 debug: CXXFLAGS += -g
 debug: default
 
-jade: main.o mainwin.o mainwin-on_create_java_click.o mainwin-on_create_donut_click.o mainwin-on_create_order_click.o order.o store.o product.o java.o donut.o customer.o *.h
-	${CXX} ${CXXFLAGS} -o jade main.o mainwin.o mainwin-on_create_java_click.o mainwin-on_create_donut_click.o mainwin-on_create_order_click.o order.o store.o product.o java.o donut.o customer.o $(GTKFLAGS)
+jade: main.o mainwin.o mainwin-on_process_click.o mainwin-on_create_java_click.o mainwin-on_create_donut_click.o mainwin-on_create_order_click.o order.o store.o product.o java.o donut.o customer.o *.h
+	${CXX} ${CXXFLAGS} -o jade main.o mainwin.o mainwin-on_process_click.o mainwin-on_create_java_click.o mainwin-on_create_donut_click.o mainwin-on_create_order_click.o order.o store.o product.o java.o donut.o customer.o $(GTKFLAGS)
 main.o: main.cpp *.h
 	${CXX} ${CXXFLAGS} -c main.cpp $(GTKFLAGS)
 mainwin.o: mainwin.cpp *.h
 	${CXX} ${CXXFLAGS} -c mainwin.cpp $(GTKFLAGS)
+mainwin-on_process_click.o: mainwin-on_process_click.cpp *.h
+	${CXX} ${CXXFLAGS} -c mainwin-on_process_click.cpp $(GTKFLAGS)
 mainwin-on_create_java_click.o: mainwin-on_create_java_click.cpp *.h
 	${CXX} ${CXXFLAGS} -c mainwin-on_create_java_click.cpp $(GTKFLAGS)
 mainwin-on_create_donut_click.o: mainwin-on_create_donut_click.cpp *.h
