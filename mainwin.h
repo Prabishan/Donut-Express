@@ -10,17 +10,21 @@ class Mainwin : public Gtk::Window
         Mainwin();
         virtual ~Mainwin();
     protected:
-        void on_quit_click();
-        void on_view_all_click();
-        void on_view_all_customer_click();
-        void on_create_coffee_click();
-        void on_create_donut_click();
-        void on_create_customer_click();
+        void on_quit_click();            // Exit the program
+        void on_view_orders_click();        // Select an order to view
+        void on_view_products_click();      //view all products
+        void on_create_order_click();    // Create new order
+        void on_create_coffee_click();   // Create a new coffee product
+        void on_create_donut_click();    // Create a new donut product
+        void on_list_customers_click();  // List all customers
+        void on_new_customer_click();    // Create a new customer
+        void on_about_click();           // About dialog
     private:
         Store _store;
-        Gtk::Label *msg;
-        Gtk::MenuItem *menuitem_new_coffee;
-        Gtk::MenuItem *menuitem_new_donut;
-        Gtk::MenuItem *menuitem_new_customer;
+        Gtk::Label *msg;                      // Status message display
+        Gtk::MenuItem *menuitem_new_order;    // Create -> Order
+        Gtk::MenuItem *menuitem_new_coffee;   // Create -> Coffee
+        Gtk::MenuItem *menuitem_new_donut;    // Create -> Donut
 };
-#endif
+#endif 
+

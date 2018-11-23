@@ -1,27 +1,34 @@
-#ifndef _STORE_H
-#define _STORE_H
+#pragma once
 #include "product.h"
 #include "customer.h"
+#include "order.h"
 #include <vector>
-class Store{
+#include <map>
 
-    public:
-        Store(std::string store_name);
-        std::string name();
-        //product functions
-        void add_product(Product* product);
-        int number_of_products();
-        std::string product_to_string(int product);
-        //customer functions
-        void add_customer(Customer* customer);
-        int number_of_customers();
-        std::string customer_to_string(int customer);
-        friend std::ostream& operator<<(std::ostream& ost, Store& store);
-        std::string customer_menu();
+   
+  
+class Store {
+  public:
+    Store(std::string store_name);
+    std::string name(); // Returns the store name
 
-    private:
-        std::string _name;
-        std::vector<Product*> _products;
-        std::vector<Customer*> _customers;
+    void add_product(Product* product); // Add a new product to stock
+    int number_of_products(); // # of products defined
+    Product* get_product(int product);
+    std::string product_to_string(int product); // string version of a product
+
+    void add_customer(Customer* customer); // Add a new customer to the list
+    int number_of_customers();  // # of customers on the list
+    std::string customer_to_string(int customer); // string version of a customer
+
+    void place_order(Order order, int customer); // place a new order
+    int number_of_orders(); // number of order defined
+    std::string order_to_string(int order_number); //string version of order
+    //void add_productstr(int np);
+    friend std::ostream& operator<<(std::ostream& ost, Store& store); 
+  private:
+    std::string _name;
+    std::vector<Product*> _products;
+    std::vector<Customer*> _customers;
+    std::map<Order, Customer> _orders;
 };
-#endif
