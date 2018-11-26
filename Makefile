@@ -1,4 +1,4 @@
-# Suggested Makefile for CSE_1325 Homework #10
+# Suggested Makefile for CSE_1325 Homework #11
 CXXFLAGS += --std=c++17
 GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
 
@@ -9,8 +9,8 @@ all: main
 debug: CXXFLAGS += -g
 debug: default
 
-jade: main.o mainwin.o mainwin-on_process_click.o mainwin-on_create_java_click.o mainwin-on_create_donut_click.o mainwin-on_create_order_click.o order.o store.o product.o java.o donut.o customer.o *.h
-	${CXX} ${CXXFLAGS} -o jade main.o mainwin.o mainwin-on_process_click.o mainwin-on_create_java_click.o mainwin-on_create_donut_click.o mainwin-on_create_order_click.o order.o store.o product.o java.o donut.o customer.o $(GTKFLAGS)
+jade: main.o mainwin.o mainwin-on_process_click.o mainwin-on_create_java_click.o mainwin-on_create_donut_click.o mainwin-on_create_order_click.o mainwin-on_select_click.o order.o store.o product.o java.o donut.o customer.o *.h
+	${CXX} ${CXXFLAGS} -o jade main.o mainwin.o mainwin-on_process_click.o mainwin-on_create_java_click.o mainwin-on_create_donut_click.o mainwin-on_create_order_click.o mainwin-on_select_click.o order.o store.o product.o java.o donut.o customer.o $(GTKFLAGS)
 main.o: main.cpp *.h
 	${CXX} ${CXXFLAGS} -c main.cpp $(GTKFLAGS)
 mainwin.o: mainwin.cpp *.h
@@ -23,6 +23,8 @@ mainwin-on_create_donut_click.o: mainwin-on_create_donut_click.cpp *.h
 	${CXX} ${CXXFLAGS} -c mainwin-on_create_donut_click.cpp $(GTKFLAGS)
 mainwin-on_create_order_click.o: mainwin-on_create_order_click.cpp *.h
 	${CXX} ${CXXFLAGS} -c mainwin-on_create_order_click.cpp $(GTKFLAGS)
+mainwin-on_select_click.o: mainwin-on_select_click.cpp *.h
+	${CXX} ${CXXFLAGS} -c mainwin-on_select_click.cpp $(GTKFLAGS)
 order.o: order.cpp *.h
 	${CXX} ${CXXFLAGS} -c order.cpp
 store.o: store.cpp *.h

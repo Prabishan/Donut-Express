@@ -16,7 +16,7 @@ Mainwin::Mainwin() : _store{Store{"JADE"}} {
 
     set_title("Java and Donut Express (JADE)");
     set_icon_from_file("window_logo.png");
-    set_default_size(800, 600);
+    set_default_size(900, 600);
 
     // Put a vertical box container as the Window contents
     Gtk::Box *vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 0));
@@ -247,6 +247,17 @@ Mainwin::Mainwin() : _store{Store{"JADE"}} {
     new_customer_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_new_customer_click));
     toolbar->append(*new_customer_button);
 
+    Gtk::SeparatorToolItem *sep3 = Gtk::manage(new Gtk::SeparatorToolItem());
+    toolbar->append(*sep3);
+
+    //     N E W   R O L E
+    // Add a New Role Icon
+    Gtk::Image *select_role_image = Gtk::manage(new Gtk::Image{"select_role.png"});
+    Gtk::ToolButton *select_role_button = Gtk::manage(new Gtk::ToolButton(*select_role_image));
+    select_role_button->set_tooltip_markup("Select New Role");
+    select_role_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_select_role_click));
+    toolbar->append(*select_role_button);
+
     // M A I N   A R E A
     Gtk::Label* main_area = Gtk::manage(new Gtk::Label);
     main_area->set_hexpand(true);    
@@ -259,8 +270,14 @@ Mainwin::Mainwin() : _store{Store{"JADE"}} {
     msg->set_hexpand(true);
     vbox->add(*msg);
 
+
     // Make the box and everything in it visible
     vbox->show_all();
+    
+    on_select_role_click();
+
+    
+    
 }
 
 Mainwin::~Mainwin() { }
@@ -471,11 +488,183 @@ void Mainwin::on_load_click() {
     }
 
 }
-/*
-void Mainwin::on_order_click() {
-    close();
 
-}*/
+void Mainwin::on_select_role_click(){
+    Glib::ustring s = "Active Person: ";
+
+    std::vector<std::string> names;
+	names.push_back("Owner");
+	names.push_back("Manager");
+	names.push_back("Server");
+	names.push_back("Customer");
+
+	int role = select_from_vector(names, "Role");
+    std::cout<<role<<std::endl;
+    if(role == -1) close();
+    switch (role) {
+		case 0: {
+			s += "Owner";
+
+			//menuitem_new->set_sensitive(true);;
+            menuitem_file->set_sensitive(true);
+			menuitem_save->set_sensitive(true);
+			menuitem_load->set_sensitive(true);
+            menuitem_quit->set_sensitive(true);
+        
+			menuitem_view->set_sensitive(true);;
+			menuitem_all_orders->set_sensitive(true);
+			menuitem_all_products->set_sensitive(true);
+			menuitem_list_customers->set_sensitive(true);
+
+			menuitem_create->set_sensitive(true);
+			menuitem_new_orders->set_sensitive(true);
+			menuitem_new_coffee->set_sensitive(true);
+			menuitem_new_donut->set_sensitive(true);
+
+			menuitem_new_customer->set_sensitive(true);
+			menuitem_process->set_sensitive(true);
+			menuitem_fill->set_sensitive(true);
+			menuitem_pay->set_sensitive(true);
+            menuitem_delete->set_sensitive(true);
+
+            menuitem_about->set_sensitive(true);
+
+            view_orders_button->set_sensitive(true);
+            create_order_button->set_sensitive(true);
+            fill_order_button->set_sensitive(true);
+            pay_order_button->set_sensitive(true);
+            delete_order_button->set_sensitive(true);
+            view_all_button->set_sensitive(true);
+            new_java_button->set_sensitive(true);
+            new_donut_button->set_sensitive(true);
+            list_customers_button->set_sensitive(true);
+            new_customer_button->set_sensitive(true);
+            select_role_button->set_sensitive(true);			
+			break;
+		}/*
+		case 1: {
+			s += "Manager";
+
+			//menuitem_new->set_sensitive(true);;
+			menuitem_save->hide();
+			menuitem_load->hide();
+            menuitem_quit->set_sensitive(true);;
+
+			menuitem_view->set_sensitive(true);;
+			menuitem_all_orders->set_sensitive(true);;
+			menuitem_all_products->set_sensitive(true);;
+			menuitem_list_customers->set_sensitive(true);;
+
+			menuitem_create->set_sensitive(true);;
+			menuitem_new_orders->set_sensitive(true);;
+			menuitem_new_coffee->set_sensitive(true);;
+			menuitem_new_donut->set_sensitive(true);;
+			menuitem_new_customer->set_sensitive(true);;
+
+			menuitem_process->set_sensitive(true);;
+			menuitem_fill->set_sensitive(true);;
+			menuitem_pay->set_sensitive(true);;
+            menuitem_delete->set_sensitive(true);;
+
+            menuitem_about->set_sensitive(true);;
+
+            view_orders_button->set_sensitive(true);;
+            create_order_button->set_sensitive(true);;
+            fill_order_button->set_sensitive(true);;
+            pay_order_button->set_sensitive(true);;
+            delete_order_button->set_sensitive(true);;
+            view_all_button->set_sensitive(true);;
+            new_java_button->set_sensitive(true);;
+            new_donut_button->set_sensitive(true);;
+            list_customers_button->set_sensitive(true);;
+            new_customer_button->set_sensitive(true);;
+            select_role_button->set_sensitive(true);;	
+
+			break;
+		}
+		case 2: {
+			s += "Server";
+
+			//menuitem_new->set_sensitive(true);;
+			menuitem_save->hide();
+			menuitem_load->hide();
+            menuitem_quit->set_sensitive(true);;
+
+			menuitem_view->set_sensitive(true);;
+			menuitem_all_orders->set_sensitive(true);;
+			menuitem_all_products->set_sensitive(true);;
+			menuitem_list_customers->set_sensitive(true);;
+
+			menuitem_create->set_sensitive(true);;
+			menuitem_new_orders->hide();
+			menuitem_new_coffee->set_sensitive(true);;
+			menuitem_new_donut->set_sensitive(true);;
+			menuitem_new_customer->hide();
+            
+			menuitem_process->set_sensitive(true);;
+			menuitem_fill->set_sensitive(true);;
+			menuitem_pay->set_sensitive(true);;
+            menuitem_delete->set_sensitive(true);;
+
+            menuitem_about->set_sensitive(true);;
+
+            view_orders_button->set_sensitive(true);;
+            create_order_button->hide();
+            fill_order_button->set_sensitive(true);;
+            pay_order_button->set_sensitive(true);;
+            delete_order_button->set_sensitive(true);;
+            view_all_button->set_sensitive(true);;
+            new_java_button->set_sensitive(true);;
+            new_donut_button->set_sensitive(true);;
+            list_customers_button->set_sensitive(true);;
+            new_customer_button->hide();
+            select_role_button->set_sensitive(true);;	
+
+			break;
+		}
+		case 3: {
+			s = "Customer";
+
+			menuitem_save->hide();
+			menuitem_load->hide();
+            menuitem_quit->set_sensitive(true);;
+
+			menuitem_view->set_sensitive(true);;
+			menuitem_all_orders->hide();
+			menuitem_all_products->set_sensitive(true);;
+			menuitem_list_customers->hide();
+
+			menuitem_create->hide();
+			menuitem_new_orders->hide();
+			menuitem_new_coffee->hide();
+			menuitem_new_donut->hide();
+			menuitem_new_customer->hide();
+            
+			menuitem_process->hide();
+			menuitem_fill->hide();
+			menuitem_pay->hide();
+            menuitem_delete->hide();
+
+            menuitem_about->set_sensitive(true);;
+
+            view_orders_button->hide();
+            create_order_button->hide();
+            fill_order_button->hide();
+            pay_order_button->hide();
+            delete_order_button->hide();
+            view_all_button->set_sensitive(true);;
+            new_java_button->hide();
+            new_donut_button->hide();
+            list_customers_button->hide();
+            new_customer_button->hide();
+            select_role_button->set_sensitive(true);;
+
+			break;
+		}*/
+		default : std::cerr << "Invalid Choice" << '\n'; break;
+	}
+    msg->set_markup(s);
+}
 
 // /////////
 // Help Menu
