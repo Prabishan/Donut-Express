@@ -329,6 +329,7 @@ void Mainwin::on_view_products_click() { // View all products
     Gtk::MessageDialog d{*this, "List of Products"}; 
     d.set_secondary_text(oss.str());
     int result = d.run();
+
 }
 
 void Mainwin::on_new_customer_click() {
@@ -499,12 +500,9 @@ void Mainwin::on_select_role_click(){
 	names.push_back("Customer");
 
 	int role = select_from_vector(names, "Role");
-    std::cout<<role<<std::endl;
-    if(role == -1) close();
-    switch (role) {
-		case 0: {
-			s += "Owner";
-
+   // if(role == -1) close();
+          /*  if(role == 0){
+			s = s + "Owner";
 			//menuitem_new->set_sensitive(true);;
             menuitem_file->set_sensitive(true);
 			menuitem_save->set_sensitive(true);
@@ -540,7 +538,7 @@ void Mainwin::on_select_role_click(){
             list_customers_button->set_sensitive(true);
             new_customer_button->set_sensitive(true);
             select_role_button->set_sensitive(true);			
-			break;
+			//break;
 		}/*
 		case 1: {
 			s += "Manager";
@@ -660,10 +658,10 @@ void Mainwin::on_select_role_click(){
             select_role_button->set_sensitive(true);;
 
 			break;
-		}*/
+		}
 		default : std::cerr << "Invalid Choice" << '\n'; break;
-	}
-    msg->set_markup(s);
+	}*/
+
 }
 
 // /////////

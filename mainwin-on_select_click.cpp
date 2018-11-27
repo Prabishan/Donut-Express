@@ -30,11 +30,4 @@ int Mainwin::select_from_vector(std::vector<std::string> names, std::string titl
         if(result==0){ delete dialog_index; return -1;}
         return c_index.get_active_row_number();
     }
-	/*if (dialog_index.run() != 1) return -1;
-
-	int index = c_index.get_active_row_number();
-
-	dialog_index.close();
-
-	return index;*/
 }

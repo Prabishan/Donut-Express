@@ -34,11 +34,14 @@ void Mainwin::on_fill_click(){
         result = dialog->run();
         if (result == 0) {delete dialog; return;}
         l_current.set_text(_store.order_to_string(c_orders.get_active_row_number()));
+        if(result == 2) {
+            _store.filler(c_orders.get_active_row_number());
+        } 
     }
 }
 
 void Mainwin::on_pay_click(){
-     msg->set_text("");
+     msg->set_text("$1000");
     Gtk::Dialog *dialog = new Gtk::Dialog{"Select an Order to Pay", *this};
 
     // Show selected order 
@@ -71,7 +74,11 @@ void Mainwin::on_pay_click(){
         result = dialog->run();
         if (result == 0) {delete dialog; return;}
         l_current.set_text(_store.order_to_string(c_orders.get_active_row_number()));
+         if(result == 2) {
+            _store.payer(c_orders.get_active_row_number());
+        } 
     }
+    
 }
 
 void Mainwin::on_delete_click() {
@@ -108,5 +115,8 @@ void Mainwin::on_delete_click() {
         result = dialog->run();
         if (result == 0) {delete dialog; return;}
         l_current.set_text(_store.order_to_string(c_orders.get_active_row_number()));
+        if(result == 2){
+             _store.remover(c_orders.get_active_row_number());
+        }
     }
 }

@@ -80,6 +80,7 @@ void Mainwin::on_create_coffee_click() { // Create a new coffee product
         }
         try {
             cost = std::stod(e_cost.get_text());
+            
         } catch(std::exception e) {
             e_cost.set_text("### Invalid ###");
             fail = true;

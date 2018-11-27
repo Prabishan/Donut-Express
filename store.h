@@ -25,6 +25,9 @@ class Store {
     void place_order(Order order, int customer); // place a new order
     int number_of_orders(); // number of order defined
     std::string order_to_string(int order_number); //string version of order
+    void filler(int order_number);
+    void payer (int order_number);
+    void remover (int order_number);
     void save(std::ostream& ost);
     //void add_productstr(int np);
     friend std::ostream& operator<<(std::ostream& ost, Store& store); 
@@ -33,4 +36,5 @@ class Store {
     std::vector<Product*> _products;
     std::vector<Customer*> _customers;
     std::map<Order, Customer> _orders;
+    std::map<Order, Customer>::iterator it1;
 };
